@@ -1,0 +1,58 @@
+//2431
+
+#include<stdio.h>
+#include<iostream>
+#include<queue>
+#include<algorithm>
+#include<string.h>
+using namespace std;
+struct info
+{
+	int dists;
+	int fuel;
+}sta[10004];
+bool cmp(info a,info b){
+	return a.dists<b.dists;
+}
+int main(){
+	int n,l,p;
+	int num1,num2;
+	memset(sta,0,sizeof(sta));
+	for(int i = 0;i<n;i++){
+		scanf("%d%d",&num1,&num2);
+		sta[i].dists = num1;
+		sta[i].fuel = num2;
+	}
+	scanf("%d%d",&l,&p);
+	for(int i = 0;i<n;i++){
+		sta[i].dists = l - sta[i].dists;
+	}
+	sta[n].dists = l;
+	sta[n++].fuel = 0;
+	sort(sta,sta+n,cmp);	
+	priority_queue<int> q;
+	int cur = 0;
+	int ans = 0;
+	int tank = p;
+	for(int i = 0;i<n;i++){
+		while(tank<(sta[i].dists - cur)){
+			if(q.empty() == true){
+				puts("-1");
+				return 0;
+			}
+
+			tank += q.top();
+			q.pop();
+			//cur = sta[i].dists;
+			ans++;
+			
+		}
+		q.push(sta[i].fuel);
+		tank = tank - (sta[i].dists - cur);
+		cur = sta[i].dists;
+	}
+	printf("%d\n", ans);
+	
+	return 0;
+
+}
