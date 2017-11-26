@@ -1,4 +1,8 @@
 //2431
+题目大意：卡车从a出发到b，距离l，卡车初始有p单位的油，每行走1单位距离，耗油1个单位，途经n个加油站，每个加油站可加一定的油，假设卡车的油箱无限大，问从a能不能到b，能到的话最少加油多少次
+思路：到每个加油站都可以选择加或者不加，可以这样想，到每个加油站都累计一次加油的机会；要使加油次数最少，最佳（贪心）方案是当油量为0时加油，即从累计的加油机会中选择加油量最多的加油站加油（优先队列）
+坑点：1.题目输入的是加油站到终点的距离。2.要把终点也看成一个距离l，加油量0的加油站
+AC代码：
 
 #include<stdio.h>
 #include<iostream>
@@ -8,48 +12,50 @@
 using namespace std;
 struct info
 {
-	int dists;
-	int fuel;
+	int dists;	//每个加油站到起点的距离
+	int fuel;	//每个加油站可以加的油量
 }sta[10004];
-bool cmp(info a,info b){
-	return a.dists<b.dists;
+bool cmp(info a,info b){	
+	return a.dists<b.dists;		//根据距离从小到大排序
 }
 int main(){
 	int n,l,p;
 	int num1,num2;
 	memset(sta,0,sizeof(sta));
 	for(int i = 0;i<n;i++){
-		scanf("%d%d",&num1,&num2);
+		scanf("%d%d",&num1,&num2);		//输入的是加油站到终点的距离
 		sta[i].dists = num1;
 		sta[i].fuel = num2;
 	}
 	scanf("%d%d",&l,&p);
 	for(int i = 0;i<n;i++){
-		sta[i].dists = l - sta[i].dists;
+		sta[i].dists = l - sta[i].dists;		//换为加油站到起点的距离
 	}
-	sta[n].dists = l;
+	sta[n].dists = l;		//一定要记得将终点也算入，理由见下面
 	sta[n++].fuel = 0;
 	sort(sta,sta+n,cmp);	
-	priority_queue<int> q;
-	int cur = 0;
-	int ans = 0;
-	int tank = p;
+	priority_queue<int> q;		//从大到小存储每个加油站油量
+	int cur = 0;	//当前位置，即到起点的距离
+	int ans = 0;	//加油次数
+	int tank = p;	//当前油箱的油量
 	for(int i = 0;i<n;i++){
+		//当卡车当前的油量不足以从当前位置开到下一个加油站时加油；sta[i].dists - cur是下一个加油站到当前位置的距离
+		//这也是前面将终点加入的原因，如果没有将终点算入，则最后一次循环sta[n-1].dists - cur为最后一个加油站到当前位置的距离，此时并没有到达终点，但循环已经结束
 		while(tank<(sta[i].dists - cur)){
-			if(q.empty() == true){
+			if(q.empty() == true){		//没有可以加油的机会，则卡车无法到达
 				puts("-1");
 				return 0;
 			}
 
-			tank += q.top();
+			tank += q.top();	//如果有，取加油量最大的加油站加油
 			q.pop();
 			//cur = sta[i].dists;
 			ans++;
 			
 		}
-		q.push(sta[i].fuel);
-		tank = tank - (sta[i].dists - cur);
-		cur = sta[i].dists;
+		q.push(sta[i].fuel);	//如果当前油量可以到达下一个加油站，则将加油机会累计
+		tank = tank - (sta[i].dists - cur);		//到达下一个加油站时，卡车所剩油量
+		cur = sta[i].dists;		//当前位置更新为下一个加油站
 	}
 	printf("%d\n", ans);
 	
