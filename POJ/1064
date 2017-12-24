@@ -1,0 +1,41 @@
+//1064
+题目大意：n条绳子，给出每条绳子的长度，已知一个数k，目的将n条绳子分隔成k段长度相等的绳子，问每段绳子的最大长度是多少？保留两位小数
+
+知识点：二分搜索
+
+思路：设每段绳子长度为x，C(x)事件表示分割的绳子的段数大于等于k。如果大于，说明x略小，还可以更长，如果小于，则减少x。
+
+实现：
+
+#include<stdio.h>
+#include<math.h>
+const int inf = 0x3f3f3f3f;
+int n,k;
+double L[10005];
+bool C(double mid){
+	int num = 0;
+	for(int i = 0;i<n;i++){
+		num += (L[i]/mid);
+	}
+	return num>=k?true:false;
+}
+int main(){
+
+	scanf("%d%d",&n,&k);
+	double low = 0,heigh = inf;		//x介于0到inf之间
+	for(int i = 0;i<n;i++){
+		scanf("%lf",&L[i]);
+	}
+	for(int i = 0;i<1000;i++){
+		double mid = (low+heigh)/2;
+		if(C(mid)){		//x可以增加
+			low = mid;
+		}
+		else
+			heigh = mid;	//x需要减小
+	}
+	//必须要向下取整，不能四舍五入.用low和heigh作为答案都可以的，因为二分1000次后，它们相差肯定小于0.01，（其实50次左右就可以）
+	printf("%.2f\n",floor(low*100)/100);
+	return 0;
+} 
+
