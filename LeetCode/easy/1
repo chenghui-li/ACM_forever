@@ -1,0 +1,34 @@
+题目大意：
+给一组数据和一个目标数target，从数据中到到两个数使得它们的和为目标数，输出这两个数的索引
+
+my想法：
+遍历数组，对于每一个数num1，从该数的下一个位置开始查找该数组中是否存在一个数target-num1，如果存在，返回。
+
+设计知识：
+vector
+map
+
+时间复杂度：
+find：O(n);
+遍历：O(n);
+总：O(n^2);
+
+源代码：
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        vector<int> ans;        //存放结果
+        map<int,int> mp;        
+        vector<int>::iterator itr;
+        for(int i =0;i<nums.size();i++)
+            mp[nums[i]] = i;    //标记每一个元素的索引
+        for(int i = 0;i<nums.size();i++){
+            itr = find(nums.begin()+i+1,nums.end(),target-nums[i]);     //判断另一个数是否在该数组中
+            if(itr != nums.end()){
+                ans.push_back(i);
+                ans.push_back(mp[*itr]);       
+                return ans;
+            }
+        }
+    }
+};
