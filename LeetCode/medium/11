@@ -1,0 +1,39 @@
+题目大意：给定n个数据{h1,h2,...hn}，用(i,0) (i,hi)两个点构成一条线段，由两条这样的线段和x轴构成一个可以盛水的容器。
+求容器的最大盛水量
+思路1：从左向右遍历左边的那条线段，在左线段的下一位继续遍历右线段，计算面积求最大(就是最最最简单的暴搜，O(n^2)的那种，肯定tle...)
+ int maxArea(vector<int>& height) {
+        int ans = 0;
+        int leng = height.size();
+        for(int i = 0;i<leng;i++){
+            for(int j = i+1;j<leng;j++){
+                int swap = (j-i)*(height[i]>height[j]?height[j]:height[i]);
+                if(swap>ans)
+                    ans = swap;
+            }
+        }
+        return ans;
+    }
+思路2：可以从两边向中间进发呀，初始左线段left = 0，右线段right = height.size()-1;求得面积，如果height[left]<height[right]
+left向右移动一位，否则right向左移动一位，直到left == right。复杂度O(n)。
+ int maxArea(vector<int>& height) {
+        int ans = 0;
+        int area = 0;
+        int leng = height.size();
+        int right = leng-1;
+        int left = 0;
+        while(left < right){
+            area = min(height[left],height[right])*(right-left);
+            ans = max(ans,area);
+            if(height[left]<height[right])
+                left++;
+            else
+                right--;
+        }
+        return ans;
+    }
+    
+为什么低的线要移动呢？
+假设height[left]<height[right]，n = right-left。
+如果left++，此时面积为S1 = (n-1)*min(height[left],height[right]) 。
+如果right--，此时面积为S2 = (n-1)*min(height[left],height[right]) 。
+显然S1>S2嘛。如果题目要求求最小的盛水面积，那每次就是高的那个线段移动了
