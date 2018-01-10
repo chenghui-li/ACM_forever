@@ -1,0 +1,105 @@
+题目大意：
+给定一组数，找出三个数使得其和为0，确定有多少种不同情况，按从小到大顺序，输出每种情况
+
+思路：二分。先从小到大排序，设标志位i从左向右遍历该组数据，设两个标志位left，right分别指向i的下一个数和最后一个数。判断sum = nums[left]+nums[right]+nums[i]，如果sum>0,right--,如果sum<0，left++。如果相等left--，right++。
+此处还有一点需要注意：判断当前nums[left]与前一个nums[left]是否相等，right和i同理，如果相等则指向下一个（因为要输出不同的情况）
+
+代码：
+
+class Solution {
+public:
+    int potition(vector<int> &nums,int left,int right){
+        int i = left,j = right;
+        while(i<j){
+            while(i<j && nums[j]>nums[i])
+                j--;
+            if(i<j){
+                swap(nums[i],nums[j]);
+                i++;
+            }
+            while(i<j && nums[i]<nums[j])
+                i++;
+            if(i<j){
+                swap(nums[i],nums[j]);
+                j--;
+            }
+                
+        }
+        return i;
+    }
+    void HeapAdjust(vector<int> &nums,int s,int m){
+        int temp = nums[s];
+        for(int j = s*2;j<=m;j*=2){
+            if(nums[j]>nums[j+1])
+                j++;
+            if(temp>nums[j])
+                break;
+            nums[s] = nums[j];
+            s = j;
+        }
+        nums[s] = temp;
+    }
+    void HeapSort(vector<int>&nums,int n){
+        for(int i = n/2;i>0;i--)
+            HeapAdjust(nums,i,n);
+        for(int i = n-1;i>1;i--){
+            swap(nums[i],nums[1]);
+            HeapAdjust(nums,1,i-1);
+        }
+            
+    }
+    void QuickSort(vector<int>& nums,int start,int end){
+        if(start>=end)
+            return ;
+        int pivot = potition(nums,start,end);
+        QuickSort(nums,start,pivot-1);
+        QuickSort(nums,pivot+1,end);
+    }
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vector<vector<int>> ans;
+        vector<int> temp;
+       // sort(nums.begin(),nums.end());
+        QuickSort(nums,0,nums.size()-1);  //sort可以，我只是练下快排
+       // HeapSort(nums,nums.size());  //堆排可以，但是我写的是下标从1开始的
+        for(int i = 0;i<nums.size();i++){
+            if(i>0 && nums[i] == nums[i-1])
+                continue;
+            int mid = i;
+            int left = i+1;
+            int right = nums.size()-1;
+            while(left<right){
+                if(nums[mid]+nums[left]+nums[right] == 0){
+                    
+                    temp.push_back(nums[mid]);
+                    temp.push_back(nums[left]);
+                    temp.push_back(nums[right]);
+                    ans.push_back(temp);
+                    temp.clear();
+                    left ++;
+                    right --;
+                    while((nums[left] == nums[left-1] )&& left<right)
+                        left++;
+                    while((right<nums.size()-1) &&nums[right] == nums[right+1] && left<right)
+                        right--;
+                        
+                    //break;
+                }
+
+             
+                if(nums[left]+nums[right]>(-nums[mid]) &&left<right){
+                    right--;
+                   // i++;
+                }
+                else if(nums[left]+nums[right]<(-nums[mid]) && left <right){
+                    //i++;
+                    left++;
+                }
+                    
+                
+                    
+            }
+            
+        }
+        return ans;
+    }
+};
