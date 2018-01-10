@@ -1,0 +1,40 @@
+题目大意：
+给一组数和一个目标，从中取出三个数，使得这三个数的和最接近输入的目标
+
+思路：二分。先从小到大排序，设标志位i从左到右遍历数组，left为i的下一个数，right为数组最后一个数。
+设一个maxn初始化为最大数，每次求得的和sum与target做差赋给len，len的绝对值与maxn比较，如果abs(len)小，则更新maxn为当前sum。使得maxn最接近target。
+如果len为负，left+1，否则right-1。如果len==0，直接返回sum。
+
+代码：
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        sort(nums.begin(),nums.end());
+        int maxn = 1000000000;
+        int sum = 0;
+        int ans = 0;
+        for(int i = 0;i<nums.size()-2;i++){
+            if(i!= 0 && nums[i] == nums[i-1])
+                continue;
+            int left = i;
+            int mid = i+1;
+            int right = nums.size()-1;
+            while(mid<right){
+                sum = nums[left]+nums[mid]+nums[right];
+                int len = sum - target;
+                int slen = abs(len);
+                if(slen<maxn){
+                    maxn = slen;
+                    ans = sum;
+                }
+                if(len<0)
+                    mid++;
+                if(len>0)
+                    right--;
+                if(len == 0)
+                    return sum;
+            }
+        }
+        return ans;
+    }
+};
