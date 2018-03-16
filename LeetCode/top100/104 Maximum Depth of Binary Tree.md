@@ -18,5 +18,34 @@ int maxDepth(TreeNode* root) {
 
 ```
 //迭代
-
+int maxDepth(TreeNode* root) {
+        if(root == nullptr)
+            return 0;
+        queue<TreeNode *>q;
+        q.push(root);
+        int level = 0;      //层数
+        int evernum = 1;    //记录当前层剩余结点个数
+        int nextnum = 0;    //记录下一层的几点个数
+        while(!q.empty()){
+            TreeNode *work = q.front();
+            q.pop();
+            if(work->left){
+                q.push(work->left);
+                nextnum++;
+            }
+                
+            if(work->right){
+                q.push(work->right);
+                nextnum++;
+            }
+            if(--evernum == 0){
+                level++;
+                evernum = nextnum;
+                nextnum = 0;
+            }
+            
+                
+        }
+        return level;
+    }
 ```
