@@ -1,0 +1,27 @@
+int singleNumber(vector<int>& nums) {
+        int a[33];
+        memset(a,0,sizeof(a));
+        for(int n = 0;n<nums.size();n++){
+        	int num = nums[n];
+            int j = 1;
+            for(int i = 0;i<32;i++){
+                if((num & j) != 0){
+                //	printf("j:%d %d\n",j,num);
+                    a[i]++;
+                }
+                j = j << 1;
+                
+            }
+        }
+        int j = 1;
+        int ans = 0;
+        for(int i = 0;i<32;i++){
+            if(a[i] % 3 == 0){
+                j = j << 1;
+                continue;
+            }
+            ans += j;
+            j = j << 1;
+        }
+        return ans;
+    }
