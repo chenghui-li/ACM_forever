@@ -1,0 +1,17 @@
+TreeNode *get(vector<int> pre,int prebeg,int preend,vector<int> vin,int vinbeg,int vinend){
+        if(prebeg >= preend || vinbeg >= vinend)
+            return nullptr;
+        TreeNode *root = new TreeNode(pre[prebeg]);
+        for(int i = vinbeg;i<vinend;i++){
+            if(vin[i] == pre[prebeg]){
+                root->left = get(pre,prebeg+1,prebeg+1+i-vinbeg,vin,vinbeg,i);
+                root->right = get(pre,prebeg+1+i-vinbeg,preend,vin,i+1,vinend);
+                break;
+            }
+        }
+        return root;
+    }
+TreeNode* reConstructBinaryTree(vector<int> pre,vector<int> vin) {
+        TreeNode *root = get(pre,0,pre.size(),vin,0,vin.size());
+        return root;
+}
