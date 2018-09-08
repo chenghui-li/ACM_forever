@@ -1,0 +1,38 @@
+//solution1
+ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+        ListNode *quick = pListHead;
+        if(quick == nullptr || k == 0)
+            return nullptr;
+        int i;
+        for(i = 1;i<k && quick->next != nullptr;i++){
+            quick = quick->next;
+        }
+        if(i < k && quick->next == nullptr)
+            return nullptr;
+        ListNode *slow = pListHead;
+        while(quick->next != nullptr && slow->next != nullptr){
+            quick = quick->next;
+            slow = slow->next;
+        }
+        return slow;
+}
+
+//solution2
+ListNode* FindKthToTail(ListNode* pListHead, unsigned int k) {
+        int now = 1;
+        if(pListHead == nullptr || k == 0)
+            return nullptr;
+        ListNode *quick,*slow;
+        quick = slow = pListHead;
+        while(quick->next != nullptr){
+            
+            if(now>=k){
+                slow = slow->next;
+            }
+            quick = quick->next;
+            now++;
+        }
+        if(now < k)
+            return nullptr;
+        return slow;
+}
