@@ -1,0 +1,21 @@
+double Power(double base, int exponent) {
+        int flag = 0;
+        if(base == 0)
+            return 0;
+        if(exponent < 0){
+            flag = -1;
+            exponent = -exponent;
+        }
+        double bb = base;
+        double ans = 1.0;
+        while(exponent){
+            if(1 & exponent)
+                ans *= bb;
+            bb = bb * bb;
+            exponent = exponent >> 1;
+            
+        }
+        if(flag == -1)
+            ans = 1/ans;
+        return ans;
+    }
