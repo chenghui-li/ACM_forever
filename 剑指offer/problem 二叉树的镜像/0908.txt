@@ -1,0 +1,9 @@
+void Mirror(TreeNode *pRoot) {
+        if(pRoot == nullptr)
+            return;
+        TreeNode *swap = pRoot->left;
+        pRoot->left = pRoot->right;
+        pRoot->right = swap;
+        Mirror(pRoot->left);
+        Mirror(pRoot->right);
+    }

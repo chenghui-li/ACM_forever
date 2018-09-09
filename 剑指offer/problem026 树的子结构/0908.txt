@@ -1,0 +1,21 @@
+bool get(TreeNode *root1,TreeNode *root2){
+        if(root1 == nullptr && root2 != nullptr)
+            return false;
+        if(root2 == nullptr)
+            return true;
+        if(root1->val != root2->val)
+            return false;
+        bool ans = false;
+            ans = get(root1->left,root2->left) && get(root1->right,root2->right);
+        if(!ans)
+            ans = get(root1->left,root2);
+        if(!ans)
+            ans = get(root1->right,root2);
+        return ans;
+    }
+    bool HasSubtree(TreeNode* pRoot1, TreeNode* pRoot2)
+    {
+        if(pRoot1 == nullptr || pRoot2 == nullptr)
+            return false;
+        return get(pRoot1,pRoot2);
+    }

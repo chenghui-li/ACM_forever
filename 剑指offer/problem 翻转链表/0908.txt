@@ -1,0 +1,27 @@
+
+//diedai
+ListNode* ReverseList(ListNode* pHead) {
+        if(pHead == nullptr)
+            return nullptr;
+        ListNode *now = pHead;
+        ListNode *pre = nullptr;
+        ListNode *nxt = nullptr;
+        while(now){
+            nxt = now->next;
+            now->next = pre;
+            pre = now;
+            now = nxt;
+        }
+        return pre;
+    }
+//digui
+ListNode *get(ListNode *now,ListNode *pre){
+        if(now == nullptr)
+            return pre;
+        ListNode *nxt = now->next;
+        now->next = pre;
+        return get(nxt,now);
+    }
+    ListNode* ReverseList(ListNode* pHead) {
+        return get(pHead,nullptr);
+    }

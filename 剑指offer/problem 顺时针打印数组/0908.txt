@@ -1,0 +1,37 @@
+vector<int> printMatrix(vector<vector<int> > matrix) {
+        int wid = matrix[0].size();
+        int hei = matrix.size();
+        int begx = 0;
+        int begy = 0;
+        int endx = hei-1;
+        int endy = wid-1;
+        vector<int> ans;
+        while(begx <= endx && begy <= endy){
+            int i = begx;
+            int j;
+            for(j = begy;j<=endy;j++){
+                ans.push_back(matrix[i][j]);
+            }
+            i = begx + 1;
+            j = endy;
+            for(i;i<=endx;i++)
+                ans.push_back(matrix[i][j]);
+            i = endx;
+            j = endy-1;
+            if(endx > begx){
+                for(j;j>=begy;j--)
+                    ans.push_back(matrix[i][j]);
+            }
+            i = endx - 1;
+            j = begy;
+            if(endy>begy){
+                for(i;i>begx;i--)
+                    ans.push_back(matrix[i][j]);
+            }
+            begx++;
+            begy++;
+            endy--;
+            endx--;
+        }
+        return ans;
+    }
