@@ -1,0 +1,30 @@
+bool IsPopOrder(vector<int> pushV,vector<int> popV) {
+        int size = popV.size();
+        stack<int> s;
+        int j = 0;
+        for(int i = 0;i<size;i++){
+            for(j;j<size;j++){
+                if(pushV[j]!=popV[i])
+                    if(!s.empty() && s.top() == popV[i]){
+                        s.pop();
+                        break;
+                    }
+                    s.push(pushV[j]);
+                    continue;
+                
+                if(pushV[j] == popV[i]){
+                    ++j;
+                    break;
+                }
+                
+            }
+            if(j>=size){
+                if(!s.empty() && s.top() == popV[i]){
+                    s.pop();
+                }
+                else
+                    return false;
+            }
+        }
+        return true;
+    }

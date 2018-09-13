@@ -1,0 +1,17 @@
+vector<int> PrintFromTopToBottom(TreeNode* root) {
+        queue<TreeNode *> q;
+        vector<int> ans;
+        if(root == nullptr)
+            return ans;
+        q.push(root);
+        while(!q.empty()){
+            TreeNode *swap = q.front();
+            q.pop();
+            ans.push_back(swap->val);
+            if(swap ->left)
+                q.push(swap->left);
+            if(swap->right)
+                q.push(swap->right);
+        }
+        return ans;
+    }

@@ -1,0 +1,64 @@
+RandomListNode* Clone(RandomListNode* pHead)
+    {
+        if(pHead == nullptr)
+            return nullptr;
+        RandomListNode *newHead = new RandomListNode(pHead->label);
+        RandomListNode *work = newHead;
+        map<RandomListNode *,int> mp1;
+        map<int,RandomListNode *> mp2;
+        RandomListNode *now = pHead;
+        int i = 1;
+        mp1[now] = i;
+        mp2[i] = newHead;
+        while(now->next != nullptr){
+            ++i;
+            RandomListNode *n = now->next;
+            RandomListNode *swap = new RandomListNode(n->label);
+            mp1[n] = i;
+            mp2[i] = swap;
+            work->next = swap;
+            work = swap;
+            now = n;
+        }
+        now = pHead;
+        work = newHead;
+        while(now->next != nullptr){
+            RandomListNode *s = now->random;
+            int p = mp1[s];
+            work->random = mp2[p];
+            work = work ->next;
+            now = now->next;
+        }
+        return newHead;
+    }
+
+
+
+//next better idea
+RandomListNode* Clone(RandomListNode* pHead)
+    {
+        if(pHead == nullptr)
+            return nullptr;
+        RandomListNode *cur = pHead;
+        while(cur != nullptr){
+            RandomListNode *tmp = new RandomListNode(cur->label);
+            tmp->next = cur->next;
+            cur->next = tmp;
+            cur = tmp->next;
+        }
+        cur = pHead;
+        while(cur != nullptr){
+            RandomListNode *tmp = cur->next;
+            if(cur->random)
+                tmp->random = cur->random->next;
+            cur = tmp->next;
+        }
+        RandomListNode *newHead = pHead->next;
+        cur = pHead;
+        while(cur->next != nullptr){
+            RandomListNode *tmp = cur->next;
+            cur->next = tmp->next;
+            cur = tmp;
+        }
+        return newHead;
+    }

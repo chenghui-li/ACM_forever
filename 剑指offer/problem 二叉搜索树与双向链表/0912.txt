@@ -1,0 +1,31 @@
+TreeNode* Convert(TreeNode* pRootOfTree)
+    {
+        if(pRootOfTree == nullptr)
+            return nullptr;
+        stack<TreeNode *> s;
+        TreeNode *now = pRootOfTree;
+        TreeNode *pre = nullptr;
+        TreeNode *newHead = nullptr;
+        bool isHead = true;
+        while(now != nullptr || !s.empty()){
+            while(now != nullptr){
+                s.push(now);
+                now = now->left;
+            }
+            if(!s.empty()){
+                now = s.top();
+                s.pop();
+                now->left = pre;
+                if(isHead != true){
+                    pre->right = now;
+                }
+                else
+                    newHead = now;
+                isHead = false;
+                pre = now;
+                now = now->right;
+                
+            }
+        }
+        return newHead;
+    }

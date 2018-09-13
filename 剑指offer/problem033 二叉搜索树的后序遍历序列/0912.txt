@@ -1,0 +1,19 @@
+bool get(vector<int> v,int beg,int end){
+        if(beg >= end){
+            return true;
+        }
+        int root = v[end];
+        int i,j;
+        for(i = end-1;i>=beg;i--)
+            if(v[i]<root)
+                break;
+        for(j = i;j>=beg;j--)
+            if(v[j]>root)
+                return false;
+        return get(v,beg,i) && get(v,i+1,end-1);
+    }
+    bool VerifySquenceOfBST(vector<int> sequence) {
+        if(sequence.size() == 0)
+            return false;
+        return get(sequence,0,sequence.size()-1);
+    }
