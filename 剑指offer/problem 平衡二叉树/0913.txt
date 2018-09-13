@@ -1,0 +1,15 @@
+bool ans = true;
+    int OK(TreeNode *pRoot){
+        if(pRoot == nullptr)
+            return 0;
+        int l = OK(pRoot->left);
+        int r = OK(pRoot->right);
+        ans = abs(l-r)<=1;
+        return (l>r?l+1:r+1);
+    }
+    bool IsBalanced_Solution(TreeNode* pRoot) {
+        if(pRoot == nullptr)
+            return true;
+        OK(pRoot);
+        return ans;
+    }

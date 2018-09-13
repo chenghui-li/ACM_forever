@@ -1,0 +1,20 @@
+static bool cmp(int a,int b){
+
+	string ab = "";
+	ab +=to_string(a);
+	ab += to_string(b);
+	string ba = "";
+	ba += to_string(b);
+	ba += to_string(a);
+	return ab<ba;
+
+}
+string PrintMinNumber(vector<int> numbers) {
+	string ans = "";
+	sort(numbers.begin(),numbers.end(),cmp);
+	for(size_t i = 0;i<numbers.size();i++){
+		cout<<numbers[i]<<endl;
+		ans+=to_string(numbers[i]);
+	}
+	return ans;
+}

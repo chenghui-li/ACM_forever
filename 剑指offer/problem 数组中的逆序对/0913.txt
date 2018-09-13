@@ -1,0 +1,49 @@
+const int mod = 1000000007;
+    int ans = 0;
+    void merge(vector<int> &data,int beg1,int end1,int end2){
+        int beg2 = end1+1;
+        int tmp[end2-beg1+1];
+        int i,j,k;
+        i = end1;
+        j = end2;
+        k = end2-beg1;
+        while(i>=beg1 && j >= beg2){
+            if(data[i] > data[j]){
+                ans = ((j-beg2+1)%mod + ans % mod )%mod;
+                tmp[k--] = data[i--];
+            }else{
+                tmp[k--] = data[j--];
+            }
+        }
+        while(i>=beg1){
+            tmp[k--] = data[i--];
+        }
+        while(j>=beg2){
+            tmp[k--] = data[j--];
+        }
+        for(int i = 0;i<end2-beg1+1;i++){
+            data[i+beg1] = tmp[i];
+        }
+    }
+    void MergeSort(vector<int> &data,int size,int h){
+        int i = 0;
+        while(i<size - 2*h+1){
+            merge(data,i,i+h-1,i+2*h-1);
+            i += 2*h;
+        }
+        if(i<size-h+1){
+            merge(data,i,i+h-1,size-1);
+        }
+    }
+    int InversePairs(vector<int> data) {
+        
+        int size = data.size();
+        if(size <= 1)
+            return 0;
+        int step = 1;
+        while(step<size){
+            MergeSort(data,size,step);
+            step *= 2;
+        }
+        return ans;
+    }

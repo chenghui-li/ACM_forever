@@ -1,0 +1,23 @@
+int TreeDepth(TreeNode* pRoot)
+    {
+        queue<TreeNode*> q;
+        if(pRoot == nullptr)
+            return 0;
+        q.push(pRoot);
+        int count = 0,nextcount = 1,depth = 0;
+        while(!q.empty()){
+            TreeNode *now = q.front();
+            q.pop();
+            count++;
+            if(now->left != nullptr)
+                q.push(now->left);
+            if(now->right != nullptr)
+                q.push(now->right);
+            if(count == nextcount){
+                nextcount = q.size();
+                count = 0;
+                depth++;
+            }
+        }
+        return depth;
+    }
